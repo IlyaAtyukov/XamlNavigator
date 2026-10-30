@@ -1,0 +1,18 @@
+## .NET / Visual Studio
+bin/
+obj/
+artifacts/
+TestResults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+*.nupkg
+*.snupkg
+*.binlog
+*.log
+packages/

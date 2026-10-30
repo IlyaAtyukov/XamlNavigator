@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Модели экранов и данные примера — общие для WPF и MAUI. Представления лежат в приложениях. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>XamlNavigator.Samples</RootNamespace>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\XamlNavigator\XamlNavigator.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- WPF-слой навигатора: окна и UserControl, диалоги, динамические страницы (DataGrid, карточки,
+       своё представление), печать списков, поле «Фото». .NET Framework 4.6.1+ и .NET 8+. -->
+  <PropertyGroup>
+    <TargetFrameworks>net461;net8.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>XamlNavigator</RootNamespace>
+    <AssemblyName>XamlNavigator.Wpf</AssemblyName>
+    <IsPackable>true</IsPackable>
+    <PackageId>XamlNavigator.Wpf</PackageId>
+    <Description>WPF platform for XamlNavigator: Window and UserControl views matched to view models by name, a menu built from [ChildOf] attributes, back history, dialogs, access control, and dynamic CRUD pages (table, cards, or a custom view, with search, printing, computed fields, and photos). .NET Framework 4.6.1+ and .NET 8+.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XamlNavigator\XamlNavigator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>

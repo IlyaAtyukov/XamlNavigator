@@ -1,0 +1,77 @@
+<Window x:Class="XamlNavigator.Samples.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding HeaderCaption}" Width="1100" Height="700" MinWidth="760" MinHeight="480"
+        WindowStartupLocation="CenterScreen" Background="White" FontFamily="Segoe UI" FontSize="14">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Меню: группы пунктов по Cluster, внутри — по Order. -->
+        <DockPanel Background="{StaticResource MenuColor}">
+            <TextBlock DockPanel.Dock="Top" Text="{Binding HeaderCaption}" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="18,18,18,14"/>
+            <ItemsControl ItemsSource="{Binding NavigationClusters}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,12">
+                            <Rectangle Height="1" Fill="#33FFFFFF" Margin="16,0,16,8">
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsFirst}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+                            <ItemsControl ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding Command}" Cursor="Hand" Margin="8,1" Padding="10,7" HorizontalContentAlignment="Left">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border x:Name="Back" Background="Transparent" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Back" Property="Background" Value="#22FFFFFF"/>
+                                                        </Trigger>
+                                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter TargetName="Back" Property="Background" Value="{StaticResource MenuSelectedColor}"/>
+                                                        </DataTrigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Icon}" Width="26" Foreground="White"/>
+                                                <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </DockPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <DockPanel Margin="16,12,16,8">
+                <Button DockPanel.Dock="Left" Content="‹ Back" Command="{Binding BackCommand}" Margin="0,0,12,0"/>
+                <TextBlock Text="{Binding DisplayName}" FontSize="22" FontWeight="SemiBold" Foreground="{StaticResource AccentColor}" VerticalAlignment="Center"/>
+            </DockPanel>
+
+            <ContentControl Grid.Row="1" Content="{Binding CurrentView.View}"/>
+        </Grid>
+    </Grid>
+</Window>

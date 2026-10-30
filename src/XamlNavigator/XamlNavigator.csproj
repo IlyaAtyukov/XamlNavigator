@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Ядро без зависимостей от UI: модели экранов, меню, история «назад», права доступа,
+       динамические страницы (модели, расчёты, проверки). Платформа подключается пакетом
+       XamlNavigator.Wpf или XamlNavigator.Maui. -->
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard2.0;net8.0</TargetFrameworks>
+    <RootNamespace>XamlNavigator</RootNamespace>
+    <AssemblyName>XamlNavigator</AssemblyName>
+    <IsPackable>true</IsPackable>
+    <PackageId>XamlNavigator</PackageId>
+    <Description>An MVVM navigator for WPF and .NET MAUI: screens matched to view models by name, a menu built from [ChildOf] attributes, back history, access control, and dynamic CRUD pages defined in a database. This is the UI-free core: install XamlNavigator.Wpf or XamlNavigator.Maui.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="XamlNavigator.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>

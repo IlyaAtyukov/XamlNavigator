@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<nav:NavigatorPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:nav="clr-namespace:XamlNavigator.Controls;assembly=XamlNavigator.Maui"
+                   xmlns:vm="clr-namespace:XamlNavigator.Samples.ViewModels;assembly=XamlNavigator.Samples.Shared"
+                   xmlns:m="clr-namespace:XamlNavigator.Models;assembly=XamlNavigator"
+                   x:Class="XamlNavigator.Samples.Views.MainView"
+                   x:DataType="vm:MainViewModel"
+                   Title="{Binding HeaderCaption}">
+
+    <nav:NavigatorPage.Resources>
+        <!-- Пункт меню: иконка и имя из [ChildOf] или из описания динамической страницы. -->
+        <DataTemplate x:Key="MenuItem" x:DataType="m:NavigationItem">
+            <Border StrokeThickness="0" Padding="12,9" Margin="6,2" StrokeShape="RoundRectangle 8" BackgroundColor="Transparent">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                        <Setter Property="BackgroundColor" Value="{StaticResource AccentSoft}" />
+                    </DataTrigger>
+                </Border.Triggers>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Command}" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="{Binding Icon}" IsVisible="{Binding HasIcon}" FontSize="16" VerticalOptions="Center" />
+                    <Label Text="{Binding DisplayName}" FontSize="14" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+        </DataTemplate>
+    </nav:NavigatorPage.Resources>
+
+    <Grid x:Name="Root" RowDefinitions="Auto,Auto,*" ColumnDefinitions="230,*">
+
+        <!-- Заголовок: «Назад» по истории навигатора и имя открытого экрана. -->
+        <Grid Grid.ColumnSpan="2" ColumnDefinitions="Auto,*,Auto" Padding="12,8" ColumnSpacing="12" BackgroundColor="{StaticResource Accent}">
+            <Button Text="‹ Back" Command="{Binding BackCommand}" BackgroundColor="#2A44D6" />
+            <Label Grid.Column="1" Text="{Binding DisplayName}" TextColor="White" FontSize="20" FontAttributes="Bold"
+                   VerticalOptions="Center" LineBreakMode="TailTruncation" />
+            <Label x:Name="Caption" Grid.Column="2" Text="{Binding HeaderCaption}" TextColor="White" Opacity="0.8" VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Узкий экран (телефон): меню — полосой под заголовком. -->
+        <ScrollView x:Name="StripMenu" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalScrollBarVisibility="Never"
+                    IsVisible="False" BackgroundColor="{StaticResource Surface}">
+            <HorizontalStackLayout Padding="4,6" BindableLayout.ItemsSource="{Binding NavigationClusters}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="m:NavigationCluster">
+                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Items}" BindableLayout.ItemTemplate="{StaticResource MenuItem}" />
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- Широкий экран: меню слева, группы — по Cluster. -->
+        <ScrollView x:Name="SideMenu" Grid.Row="1" Grid.RowSpan="2" BackgroundColor="{StaticResource Surface}">
+            <VerticalStackLayout Padding="0,10" BindableLayout.ItemsSource="{Binding NavigationClusters}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="m:NavigationCluster">
+                        <VerticalStackLayout Margin="0,0,0,8">
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Items}" BindableLayout.ItemTemplate="{StaticResource MenuItem}" />
+                            <BoxView HeightRequest="1" Color="#DDE0EA" Margin="12,6,12,0" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Текущий экран: CurrentView.View — ContentView, созданный навигатором. -->
+        <ContentView x:Name="Host" x:DataType="{x:Null}" Grid.Row="2" Grid.Column="1" Content="{Binding CurrentView.View}" />
+    </Grid>
+</nav:NavigatorPage>
