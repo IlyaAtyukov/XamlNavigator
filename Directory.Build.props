@@ -10,6 +10,11 @@
     <!-- net461 давно вне поддержки, но шаблон для экзаменов собирается именно под него. -->
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+    <!-- Версия MAUI для всех MAUI-проектов решения — наименьшая, которую требует пакет XamlNavigator.Maui, а не
+         $(MauiVersion) машины сборки: иначе пакет требовал бы MAUI сервера сборки, и приложение на более ранней
+         10.0.x получало бы ошибку понижения версии NU1605. Одна на всех: пример со ссылкой на проект и другой
+         версией MAUI не собирается под Windows (конфликт ресурсов MAUI), а тесты проверяют именно заявленную. -->
+    <XamlNavigatorMauiVersion>10.0.0</XamlNavigatorMauiVersion>
   </PropertyGroup>
 
   <PropertyGroup>

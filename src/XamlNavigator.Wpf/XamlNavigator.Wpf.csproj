@@ -9,6 +9,7 @@
     <AssemblyName>XamlNavigator.Wpf</AssemblyName>
     <IsPackable>true</IsPackable>
     <PackageId>XamlNavigator.Wpf</PackageId>
+    <PackageTags>wpf;mvvm;navigation;navigator;dynamic-pages;crud</PackageTags>
     <Description>WPF platform for XamlNavigator: Window and UserControl views matched to view models by name, a menu built from [ChildOf] attributes, back history, dialogs, access control, and dynamic CRUD pages (table, cards, or a custom view, with search, printing, computed fields, and photos). .NET Framework 4.6.1+ and .NET 8+.</Description>
   </PropertyGroup>
 
