@@ -45,16 +45,21 @@ jobs:
           $extra = @(); if ($env:PACKAGE_VERSION) { $extra += "-p:Version=$env:PACKAGE_VERSION" }
           dotnet pack XamlNavigator.sln -c Release --no-build -o artifacts @extra
 
+      # Артефакты — для удобства: исчерпанное хранилище аккаунта не должно ронять сборку и пропускать выпуск в NuGet.
       - uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: packages
           path: artifacts/*
+          retention-days: 30
 
       - uses: actions/upload-artifact@v4
         if: always()
+        continue-on-error: true
         with:
           name: test-results
           path: TestResults
+          retention-days: 7
 
       - name: Publish to NuGet
         if: startsWith(github.ref, 'refs/tags/v')

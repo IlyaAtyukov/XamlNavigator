@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\TestAssemblyCulture.cs" Link="TestAssemblyCulture.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\XamlNavigator.Wpf\XamlNavigator.Wpf.csproj" />
   </ItemGroup>
 

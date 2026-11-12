@@ -9,8 +9,21 @@ using Xunit;
 
 namespace XamlNavigator.Tests
 {
+    /// <summary>
+    /// Тесты, которые меняют общий для всей программы NavigatorLocalization.Translator, идут отдельно от остальных:
+    /// параллельный тест другого класса получил бы на это время чужой перевод.
+    /// </summary>
+    [CollectionDefinition(Name, DisableParallelization = true)]
+    public sealed class GlobalLocalizationCollection
+    {
+        public const string Name = "Global localization";
+    }
+
+    [Collection(GlobalLocalizationCollection.Name)]
     public class LocalizationTests
     {
+        public LocalizationTests() => TestCulture.Russian();
+
         private static readonly Regex KeyCall = new Regex(@"\b(?:Tr\.T|Tr\.F|Text)\(\s*""((?:[^""\\]|\\.)*)""", RegexOptions.Compiled);
 
         private static string RepoRoot()
@@ -101,6 +114,19 @@ namespace XamlNavigator.Tests
                 Assert.Equal("custom", NavigatorLocalization.Translate(key));
                 var other = RussianStrings.Table.Keys.Skip(1).First();
                 Assert.Equal(RussianStrings.Table[other], NavigatorLocalization.Translate(other));
+            }
+            finally { NavigatorLocalization.Translator = previous; }
+        }
+
+        [Fact]
+        public void Translator_replaces_library_strings()
+        {
+            var previous = NavigatorLocalization.Translator;
+            try
+            {
+                NavigatorLocalization.Translator = s => s == "No records yet" ? "Пусто" : null;
+                Assert.Equal("Пусто", NavigatorLocalization.Translate("No records yet"));
+                Assert.Equal("Да", NavigatorLocalization.Translate("Yes"));
             }
             finally { NavigatorLocalization.Translator = previous; }
         }

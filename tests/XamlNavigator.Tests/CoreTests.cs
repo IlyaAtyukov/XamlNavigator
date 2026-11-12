@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using XamlNavigator.Core;
 using XamlNavigator.DynamicPages;
-using XamlNavigator.Localization;
 using XamlNavigator.Models;
 using XamlNavigator.Platform;
 using Xunit;
@@ -110,19 +109,6 @@ namespace XamlNavigator.Tests
 
             Assert.Equal(2.5m, shipment.Cost);
             Assert.Empty(evaluator.Problems);
-        }
-
-        [Fact]
-        public void Translator_replaces_library_strings()
-        {
-            var previous = NavigatorLocalization.Translator;
-            try
-            {
-                NavigatorLocalization.Translator = s => s == "No records yet" ? "Пусто" : null;
-                Assert.Equal("Пусто", NavigatorLocalization.Translate("No records yet"));
-                Assert.Equal("Да", NavigatorLocalization.Translate("Yes"));
-            }
-            finally { NavigatorLocalization.Translator = previous; }
         }
 
         [Fact]
