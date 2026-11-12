@@ -10,6 +10,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write   # одноразовый ключ nuget.org через Trusted Publishing, без постоянного секрета
     env:
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -61,6 +64,15 @@ jobs:
           path: TestResults
           retention-days: 7
 
+      # Политика Trusted Publishing на nuget.org: владелец IlyaAtyukov, репозиторий IlyaAtyukov/XamlNavigator,
+      # файл ci.yml. Ключ живёт час — его берут прямо перед публикацией.
+      - name: NuGet login
+        id: nuget-login
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: NuGet/login@v1
+        with:
+          user: IlyaAtyukov
+
       - name: Publish to NuGet
         if: startsWith(github.ref, 'refs/tags/v')
-        run: dotnet nuget push "artifacts/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push "artifacts/*.nupkg" --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
